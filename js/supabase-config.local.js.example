@@ -1,0 +1,10 @@
+// Copy this file to `js/supabase-config.local.js` (DO NOT commit)
+// and update with your project's public anon credentials.
+// Example:
+// window.SUPABASE_CONFIG = {
+//   SUPABASE_URL: 'https://your-project-id.supabase.co',
+//   SUPABASE_ANON_KEY: 'eyJ...'
+// };
+
+// After creating js/supabase-config.local.js, reload the page. The app will use these values to
+// initialize Supabase. Keep this file out of version control and rotate keys if leaked.
