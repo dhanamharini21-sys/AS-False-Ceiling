@@ -431,8 +431,9 @@ body {
     pointer-events: all;
 }
 
-.scroll-container * {
+.scroll-container > * {
     pointer-events: all;
+    font-family: 'Poppins', 'Montserrat', 'Segoe UI', Roboto, sans-serif !important;
 }
 
 /* ========== SECTIONS ========== */
@@ -994,18 +995,22 @@ body {
 }
 
 .before-after-container {
-    max-width: 1200px;
+    max-width: 600px;
+    width: min(100%, 600px);
     margin: 0 auto;
+    padding: 0 1rem;
 }
 
 .before-after-slider {
     position: relative;
     width: 100%;
-    height: 600px;
+    height: 700px;
+    max-height: 78vh;
     border-radius: 24px;
     overflow: hidden;
     cursor: ew-resize;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    background: #000;
 }
 
 .before-image,
@@ -1015,6 +1020,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .before-image {
@@ -1035,6 +1043,9 @@ body {
     font-weight: 600;
     color: white;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .before-placeholder {
@@ -1196,9 +1207,14 @@ body {
 /* ========== FEATURED PROJECTS ========== */
 .featured-projects {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
     gap: 2rem;
     margin-top: 3rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .project-card {
@@ -1211,6 +1227,10 @@ body {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     position: relative;
     overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .project-card::before {
@@ -1810,6 +1830,20 @@ body {
 }
 
 @media (max-width: 768px) {
+    header, .premium-header, .navbar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        z-index: 9999 !important;
+        background: rgba(10, 10, 10, 0.95) !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    body, main, #hero, .hero-section {
+        padding-top: 60px !important;
+    }
+
     .section {
         padding: 3rem 1.5rem;
     }
@@ -1917,6 +1951,35 @@ body {
     
     .premium-header {
         padding: 1rem 1.5rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        width: 100%;
+        min-height: 56px;
+    }
+
+    .header-cta,
+    .cta-button,
+    .header-cta-btn,
+    .book-btn {
+        display: none !important;
+    }
+
+    .logo-section {
+        flex: 0 0 auto;
+    }
+
+    .mobile-menu-toggle {
+        display: flex !important;
+        margin-left: auto;
+        flex: 0 0 auto;
     }
     
     .logo-badge {
@@ -1926,6 +1989,18 @@ body {
     
     .logo-letter {
         font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .before-after-container {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .before-after-slider {
+        height: min(70vh, 620px);
+        max-height: 620px;
     }
 }
 
@@ -1959,7 +2034,8 @@ body {
     }
     
     .before-after-slider {
-        height: 400px;
+        height: 520px;
+        max-height: 70vh;
     }
     
     .showcase-container {
@@ -1998,6 +2074,35 @@ body {
     background-size: 1000px 100%;
 }
 
+.skeleton-card {
+    background: linear-gradient(90deg, #111 25%, #222 50%, #111 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 8px;
+    height: 300px;
+    width: 100%;
+}
+
+.slider-skeleton {
+    background: linear-gradient(90deg, #0a0a0a 25%, #1a150a 50%, #0a0a0a 75%) !important;
+    background-size: 200% 100% !important;
+    animation: shimmer 1.5s infinite linear !important;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    transition: opacity 0.4s ease-in-out;
+    border-radius: 8px;
+}
+
+.slider-skeleton.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
 /* ========== ACCESSIBILITY ========== */
 .btn:focus,
 .filter-btn:focus,
@@ -2021,12 +2126,267 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+@media screen and (max-width: 480px) {
+    .gallery-grid,
+    #galleryGrid {
+        display: grid !important;
+        grid-template-columns: repeat(1, 1fr) !important;
+        gap: 20px !important;
+        width: 100% !important;
+    }
+
+    .gallery-item {
+        width: 100% !important;
+        min-height: 300px !important;
+    }
+
+    /* Scale down the contact cards size and text */
+    .contact-card, .info-box {
+        padding: 10px 8px !important;
+        font-size: 11px !important;
+    }
+
+    .contact-card h3, .info-box h3 {
+        font-size: 13px !important;
+        margin-bottom: 5px !important;
+    }
+
+    .contact-card p, .info-box p {
+        font-size: 10px !important;
+        line-height: 1.3 !important;
+    }
+
+    /* Scale down the contact form container and inputs */
+    .contact-form-container, #contactForm {
+        padding: 15px !important;
+    }
+
+    .contact-form-container input,
+    .contact-form-container textarea,
+    #contactForm .form-control {
+        padding: 8px !important;
+        font-size: 12px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .contact-form-container button,
+    #contactForm .submit-btn {
+        padding: 10px !important;
+        font-size: 12px !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .contact-contact-footer-section,
+    .contact-section, .contact-grid, #contact .row, .footer-contact-container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 20px !important;
+        width: 100% !important;
+    }
+
+    .contact-card, .info-box, .footer-card {
+        width: 100% !important;
+        max-width: 280px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 20px 15px !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* ==========================================
+   AIRTIGHT MOBILE OVERHAUL (320px to 480px)
+   ========================================== */
+@media screen and (max-width: 480px) {
+    html, body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
+
+    .container, .section, section {
+        padding: 40px 15px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    h1, .hero-title {
+        font-size: 26px !important;
+        line-height: 1.2 !important;
+        letter-spacing: 1px !important;
+    }
+
+    h2, .section-title {
+        font-size: 22px !important;
+        margin-bottom: 20px !important;
+    }
+
+    h3 {
+        font-size: 18px !important;
+    }
+
+    p, .section-subtitle {
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+    .navbar, header .container {
+        padding: 10px 15px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    .logo-img {
+        max-height: 40px !important;
+    }
+
+    .facts-grid, .services-grid, .about-stats, .features-container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 20px !important;
+        width: 100% !important;
+    }
+
+    .fact-card, .service-card, .stat-item {
+        width: 100% !important;
+        max-width: 340px !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+
+    .filter-container, .gallery-filters {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+        padding: 0 5px !important;
+    }
+
+    .filter-btn {
+        font-size: 11px !important;
+        padding: 6px 12px !important;
+        flex: unset !important;
+    }
+
+    .gallery-grid, #galleryGrid {
+        display: grid !important;
+        grid-template-columns: repeat(1, 1fr) !important;
+        gap: 25px !important;
+        width: 100% !important;
+    }
+
+    .gallery-item {
+        width: 100% !important;
+        min-height: 320px !important;
+        max-width: 340px !important;
+        margin: 0 auto !important;
+    }
+
+    .project-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .contact-contact-footer-section, .contact-grid, #contactForm {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 20px !important;
+    }
+
+    .contact-card, .info-box, .form-group {
+        width: 100% !important;
+        max-width: 320px !important;
+        margin: 0 auto !important;
+    }
+
+    #contactForm input, #contactForm textarea {
+        width: 100% !important;
+        font-size: 14px !important;
+        padding: 12px !important;
+    }
+
+    .footer-container, .footer-grid, .footer-links {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 25px !important;
+    }
+}
+
 /* ========== PERFORMANCE OPTIMIZATIONS ========== */
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+/* Universal Responsive Auto-Adjustment for Contact Form across ALL devices */
+.contact-form-container,
+#contactForm,
+.form-wrapper,
+.contact-section form {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 15px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+.form-group,
+.input-group,
+#contactForm .row {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.contact-form-container input,
+.contact-form-container textarea,
+#contactForm .form-control,
+#contactForm input,
+#contactForm textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0px 0px 12px 0px !important;
+    padding: 12px 10px !important;
+    font-size: 14px !important;
+}
+
+.contact-form-container button,
+#contactForm .submit-btn,
+#contactForm button {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 12px !important;
+    font-size: 14px !important;
+}
+
+@media screen and (max-width: 360px) {
+    .contact-form-container input,
+    #contactForm .form-control {
+        font-size: 13px !important;
+        padding: 10px 8px !important;
     }
 }
 
@@ -2243,7 +2603,11 @@ body {
 /* 1. முழு செக்ஷனுக்கும் ஒரே ஃபான்ட் (Font) அப்ளை செய்ய */
 .testimonials-section, 
 .contact-footer-section, 
-.contact-footer-section * {
+.contact-footer-section > * {
+    font-family: 'Poppins', 'Montserrat', 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.scroll-container > * {
     font-family: 'Poppins', 'Montserrat', 'Segoe UI', Roboto, sans-serif !important;
 }
 
@@ -2354,3 +2718,131 @@ body {
 
 /* Small accessibility focus style */
 .floating-contact .floating-btn:focus { outline: 3px solid rgba(212,175,55,0.25); outline-offset: 3px; }
+
+/* Universal Tall Vertical Portrait Layout for Contact Form */
+.contact-form-container, 
+#contactForm, 
+.form-wrapper {
+    width: 100% !important;
+    max-width: 550px !important; /* Restricts the horizontal stretching on desktop and laptops */
+    margin: 0 auto !important; /* Centers the portrait box perfectly on large displays */
+    padding: 35px 25px !important;
+    background: #0d0d0d !important;
+    border: 1px solid rgba(212, 175, 55, 0.2) !important; /* Soft premium gold border */
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+}
+
+/* Force form groups to handle nested inputs in a clean portrait list stacking */
+.form-group {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+}
+
+/* Optimize labels for clear visibility */
+.form-group label {
+    font-size: 12px !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 6px !important;
+}
+
+/* Elegant high-contrast styling for all input bars */
+.form-control, 
+#contactForm input, 
+#contactForm textarea {
+    width: 100% !important;
+    height: 48px !important; /* Comfortable finger-touch height for mobile devices */
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    padding: 12px 15px !important;
+    font-size: 14px !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.2s ease !important;
+}
+
+/* Give more vertical breathing room to the address input text box */
+#contactForm textarea,
+.form-control[rows] {
+    height: 90px !important; /* Perfect portrait vertical layout scale */
+}
+
+/* Focus accent transition */
+.form-control:focus, 
+#contactForm input:focus {
+    border-color: #d4af37 !important; /* Highlights gold on interaction */
+    outline: none !important;
+}
+
+/* Center and adapt the action button flawlessly */
+.submit-btn,
+#contactForm button,
+#contactForm .book-now-btn {
+    width: 100% !important;
+    height: 50px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    letter-spacing: 1px !important;
+    border-radius: 6px !important;
+    margin-top: 10px !important;
+}
+
+/* Micro responsive compliance adjustment for small phones */
+@media screen and (max-width: 480px) {
+    .contact-form-container, #contactForm {
+        max-width: 100% !important;
+        padding: 25px 15px !important;
+    }
+}
+
+@media (max-width: 768px) {
+  .work-section .content,
+  .work-section .glass-panel {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+  .featured-projects {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+  }
+  .project-card {
+    width: 100% !important;
+    margin: 0 0 20px 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .work-section .glass-panel {
+    margin: 0 !important;
+    padding: 1.5rem 1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border-radius: 0 !important;
+  }
+}
+
+#contactForm input,
+#contactForm textarea {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+#contactForm input:-webkit-autofill,
+#contactForm input:-webkit-autofill:hover,
+#contactForm input:-webkit-autofill:focus,
+#contactForm textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff !important;
+}

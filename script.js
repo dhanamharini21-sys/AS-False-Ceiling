@@ -114,6 +114,8 @@ async function fetchGallery() {
     const galleryGrid = document.getElementById('galleryGrid');
     if (!galleryGrid) return;
 
+    galleryGrid.innerHTML = Array(8).fill('<div class="skeleton-card"></div>').join('');
+
     try {
         if (supabaseClient && SUPABASE_ANON_KEY !== 'YOUR_ANON_PUBLIC_KEY_HERE') {
             // Fetch ALL gallery items ordered by simple integer ID
@@ -227,6 +229,13 @@ function initGalleryHoverEffects() {
 async function initBeforeAfterImages() {
     const beforePlaceholder = document.querySelector('.before-placeholder');
     const afterPlaceholder = document.querySelector('.after-placeholder');
+    const sliderContainer = document.querySelector('.before-after-slider');
+
+    if (sliderContainer && !document.getElementById('slider-loader')) {
+        sliderContainer.insertAdjacentHTML('afterbegin', '<div class="slider-skeleton" id="slider-loader"></div>');
+    }
+
+    const sliderLoader = document.getElementById('slider-loader');
 
     // Fetch Before/After images from Supabase
     let beforeImageUrl = 'https://leytftnlvyeqisfiyxck.supabase.co/storage/v1/object/public/before.jpg'; // fallback
@@ -260,6 +269,18 @@ async function initBeforeAfterImages() {
         console.warn('⚠️ Could not fetch Before/After images from Supabase, using fallback URLs:', err);
     }
 
+    const preloadImage = (src) => new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(src);
+        img.onerror = () => resolve(src);
+        img.src = src;
+    });
+
+    const [beforeLoaded, afterLoaded] = await Promise.all([
+        preloadImage(beforeImageUrl),
+        preloadImage(afterImageUrl)
+    ]);
+
     if (beforePlaceholder) {
         beforePlaceholder.style.backgroundImage = `url('${beforeImageUrl}')`;
         beforePlaceholder.style.backgroundSize = 'contain';
@@ -290,6 +311,10 @@ async function initBeforeAfterImages() {
                 <span style="display:block; font-size:0.9rem; color:rgba(255,255,255,0.8); margin-top:0.3rem;">Luxury False Ceiling</span>
             </div>
         `;
+    }
+
+    if (sliderLoader) {
+        sliderLoader.classList.add('fade-out');
     }
 }
 
@@ -407,10 +432,17 @@ function initSmoothScroll() {
 function initMobileMenu() {
     if (!mobileMenuToggle || !navMenu) return;
 
-    mobileMenuToggle.addEventListener('click', () => {
-        mobileMenuToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
-        document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+    const setMenuState = (isOpen) => {
+        mobileMenuToggle.classList.toggle('active', isOpen);
+        navMenu.classList.toggle('active', isOpen);
+        mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+    };
+
+    mobileMenuToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setMenuState(!navMenu.classList.contains('active'));
     });
 
     const navLinks = document.querySelectorAll('.nav-link');
@@ -418,18 +450,17 @@ function initMobileMenu() {
          link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetId = link.getAttribute('href');
-            mobileMenuToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.style.overflow = '';
-            document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+            setMenuState(false);
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
         });
     });
 
     document.addEventListener('click', (e) => {
         if (!navMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
-            mobileMenuToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.style.overflow = '';
+            setMenuState(false);
         }
     });
 }
@@ -846,14 +877,13 @@ function handleFormSubmit(event) {
     
     // Get form data
     const formData = {
-        name: form.querySelector('#name').value,
-        phone: form.querySelector('#phone').value,
-        email: form.querySelector('#email').value,
-        message: '' // No message field in current form
+        name: form.querySelector('#name')?.value || '',
+        phone: form.querySelector('#phone')?.value || '',
+        address: form.querySelector('#address')?.value || ''
     };
 
     // Validate form
-    if (!formData.name || !formData.phone || !formData.email) {
+    if (!formData.name || !formData.phone || !formData.address) {
         showFormError('Please fill in all required fields');
         return;
     }

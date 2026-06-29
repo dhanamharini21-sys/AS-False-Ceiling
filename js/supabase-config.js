@@ -86,16 +86,10 @@ async function submitContactForm(formData) {
 
     try {
         // Validate required fields
-        const { name, phone, email, message } = formData;
+        const { name, phone, address } = formData;
         
-        if (!name || !phone || !email) {
-            throw new Error('Please fill in all required fields (name, phone, email)');
-        }
-
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            throw new Error('Please enter a valid email address');
+        if (!formData.name || !formData.phone || !formData.address) {
+            throw new Error('Please fill in all required fields (name, phone, address)');
         }
 
         // Phone validation (basic)
@@ -111,8 +105,7 @@ async function submitContactForm(formData) {
                 {
                     name: name.trim(),
                     phone: phone.trim(),
-                    email: email.trim(),
-                    message: message ? message.trim() : '',
+                    message: address.trim(),
                     created_at: new Date().toISOString()
                 }
             ])
