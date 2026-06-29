@@ -2846,3 +2846,18 @@ body {
   -webkit-text-fill-color: #ffffff !important;
   caret-color: #ffffff !important;
 }
+
+/* Mobile CTA Button - Show only on mobile devices */
+@media (max-width: 768px) {
+    .mobile-cta-button {
+        display: block !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .mobile-cta-button {
+        padding: 14px 28px !important;
+        font-size: 0.85rem !important;
+        margin-top: 15px !important;
+    }
+}
