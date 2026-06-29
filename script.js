@@ -878,12 +878,13 @@ function handleFormSubmit(event) {
     // Get form data
     const formData = {
         name: form.querySelector('#name')?.value || '',
+        email: form.querySelector('#email')?.value || '',
         phone: form.querySelector('#phone')?.value || '',
         address: form.querySelector('#address')?.value || ''
     };
 
     // Validate form
-    if (!formData.name || !formData.phone || !formData.address) {
+    if (!formData.name || !formData.email || !formData.phone || !formData.address) {
         showFormError('Please fill in all required fields');
         return;
     }
@@ -902,6 +903,13 @@ function handleFormSubmit(event) {
                 console.debug('✅ Supabase submission successful:', result);
                 showFormSuccess(result.message);
                 form.reset();
+                
+                // Redirect to WhatsApp with pre-filled message
+                const whatsappMessage = encodeURIComponent(
+                    `New Contact Form Submission:\n- Name: ${formData.name}\n- Phone: ${formData.phone}\n- Email: ${formData.email}\n- Message/Service: ${formData.address}`
+                );
+                const whatsappURL = `https://wa.me/916385772766?text=${whatsappMessage}`;
+                window.open(whatsappURL, '_blank');
             })
             .catch(error => {
                 console.error('❌ Supabase submission error:', error);

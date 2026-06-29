@@ -86,10 +86,10 @@ async function submitContactForm(formData) {
 
     try {
         // Validate required fields
-        const { name, phone, address } = formData;
+        const { name, email, phone, address } = formData;
         
-        if (!formData.name || !formData.phone || !formData.address) {
-            throw new Error('Please fill in all required fields (name, phone, address)');
+        if (!formData.name || !formData.email || !formData.phone || !formData.address) {
+            throw new Error('Please fill in all required fields (name, email, phone, address)');
         }
 
         // Phone validation (basic)
@@ -104,6 +104,7 @@ async function submitContactForm(formData) {
             .insert([
                 {
                     name: name.trim(),
+                    email: email.trim(),
                     phone: phone.trim(),
                     message: address.trim(),
                     created_at: new Date().toISOString()
